@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dakarli AI Unified Example",
+  "type": "object",
+  "required": ["id", "split", "task", "messages", "quality"],
+  "properties": {
+    "id": {"type": "string"},
+    "split": {"enum": ["train", "validation", "test"]},
+    "task": {"enum": ["sft", "tool_calling", "agent_trajectory", "debugging", "seo_audit", "safety", "evaluation"]},
+    "domain": {"type": "string"},
+    "messages": {"type": "array", "minItems": 2},
+    "tools": {"type": "array"},
+    "trajectory": {"type": "object"},
+    "expected": {"type": "object"},
+    "quality": {
+      "type": "object",
+      "required": ["difficulty", "verifiable", "source_type"],
+      "properties": {
+        "difficulty": {"enum": ["easy", "medium", "hard", "expert"]},
+        "verifiable": {"type": "boolean"},
+        "source_type": {"type": "string"}
+      }
+    }
+  }
+}
