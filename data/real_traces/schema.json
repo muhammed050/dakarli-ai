@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dakarli Verified Tool Trace",
+  "type": "object",
+  "required": ["trace_id", "source_type", "tool", "request", "steps", "outcome", "verification", "quality"],
+  "properties": {
+    "trace_id": {"type": "string"},
+    "source_type": {"enum": ["verified_connector", "verified_runtime", "verified_browser"]},
+    "tool": {"type": "string"},
+    "request": {"type": "string"},
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["step", "kind"],
+        "properties": {
+          "step": {"type": "integer", "minimum": 1},
+          "kind": {"enum": ["plan", "tool_call", "observation", "decision", "correction", "verification"]},
+          "tool": {"type": "string"},
+          "arguments": {"type": "object"},
+          "observation": {},
+          "result": {},
+          "evidence": {"type": "string"}
+        }
+      }
+    },
+    "outcome": {"type": "string"},
+    "verification": {"type": "object"},
+    "quality": {
+      "type": "object",
+      "required": ["verified", "secrets_removed", "source_ref"],
+      "properties": {
+        "verified": {"const": true},
+        "secrets_removed": {"const": true},
+        "source_ref": {"type": "string"}
+      }
+    }
+  }
+}
