@@ -1,0 +1,17 @@
+{
+  "trace_id": "github-real-003",
+  "source_type": "verified_connector",
+  "tool": "github",
+  "request": "Change a controlled fixture from status=before to status=after, then verify the persisted result.",
+  "steps": [
+    {"step":1,"kind":"plan","evidence":"Read the fixture before editing and preserve its current blob SHA for optimistic concurrency."},
+    {"step":2,"kind":"tool_call","tool":"github.fetch_file","arguments":{"repository_full_name":"muhammed050/dakarli-ai","path":"data/real_traces/fixtures/verification_target.txt","ref":"dataset/v2.2-production"}},
+    {"step":3,"kind":"observation","observation":{"content":"status=before\nexpected=after\n","sha":"2ebd5d0b384bbe7e955d5a38dbf79f5de9bac098"},"evidence":"Actual connected GitHub file response."},
+    {"step":4,"kind":"tool_call","tool":"github.update_file","arguments":{"repository_full_name":"muhammed050/dakarli-ai","path":"data/real_traces/fixtures/verification_target.txt","branch":"dataset/v2.2-production","sha":"2ebd5d0b384bbe7e955d5a38dbf79f5de9bac098"}},
+    {"step":5,"kind":"observation","observation":{"content_sha":"f0a68d1e7f8f858b3c6e91aa05421a2f31a0e34b","commit_sha":"e417bc11f26bd7c3c1efe4f924b7705b6e0f0c37"},"evidence":"Actual connected GitHub update response."},
+    {"step":6,"kind":"verification","tool":"github.fetch_file","arguments":{"repository_full_name":"muhammed050/dakarli-ai","path":"data/real_traces/fixtures/verification_target.txt","ref":"dataset/v2.2-production"},"observation":{"content":"status=after\nexpected=after\n","sha":"f0a68d1e7f8f858b3c6e91aa05421a2f31a0e34b"},"evidence":"The persisted file content and SHA match the update result."}
+  ],
+  "outcome":"Controlled file correction completed and independently verified.",
+  "verification":{"verified":true,"expected":"status=after","observed":"status=after","sha_matches":true},
+  "quality":{"verified":true,"secrets_removed":true,"source_ref":"Actual GitHub fetch -> update -> fetch sequence"}
+}

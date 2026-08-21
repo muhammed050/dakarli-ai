@@ -1,0 +1,11 @@
+{
+  "github.read": {"arguments": {"path": "string", "ref": "string?"}, "side_effect": "none"},
+  "github.edit": {"arguments": {"path": "string", "content": "string", "branch": "string"}, "side_effect": "workspace"},
+  "terminal.test": {"arguments": {"command": "string", "cwd": "string"}, "side_effect": "sandbox"},
+  "browser.open": {"arguments": {"url": "string"}, "side_effect": "none"},
+  "browser.click": {"arguments": {"selector": "string"}, "side_effect": "external_interaction"},
+  "vercel.deploy": {"arguments": {"project": "string", "environment": "preview|production"}, "side_effect": "deployment"},
+  "supabase.sql_read": {"arguments": {"query": "string"}, "side_effect": "none"},
+  "supabase.sql_write": {"arguments": {"query": "string", "environment": "staging|production"}, "side_effect": "database_write"},
+  "search_console.query": {"arguments": {"site": "string", "query": "string", "days": "integer"}, "side_effect": "none"}
+}

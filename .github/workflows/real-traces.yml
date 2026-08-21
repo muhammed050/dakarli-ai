@@ -1,0 +1,30 @@
+name: real-traces-quality
+
+on:
+  push:
+    paths:
+      - 'data/real_traces/**'
+      - 'scripts/validate_real_traces.py'
+      - '.github/workflows/real-traces.yml'
+  pull_request:
+    paths:
+      - 'data/real_traces/**'
+      - 'scripts/validate_real_traces.py'
+      - '.github/workflows/real-traces.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate trace corpus
+        run: python scripts/validate_real_traces.py
+      - name: Upload trace corpus
+        uses: actions/upload-artifact@v4
+        with:
+          name: dakarli-verified-real-traces
+          path: data/real_traces/

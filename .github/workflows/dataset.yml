@@ -1,0 +1,51 @@
+name: dataset-quality
+
+on:
+  push:
+    paths:
+      - 'scripts/**'
+      - 'data/schema.json'
+      - 'data/tool_schemas.json'
+      - 'evaluation/**'
+      - '.github/workflows/dataset.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'data/schema.json'
+      - 'data/tool_schemas.json'
+      - 'evaluation/**'
+      - '.github/workflows/dataset.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build 10k dataset
+        run: python scripts/build_dataset.py --output data/generated --target 10000 --seed 42
+      - name: Validate dataset
+        run: python scripts/validate_dataset.py data/generated/all.jsonl
+      - name: Validate split isolation
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('data/generated')
+          ids = {}
+          for split in ('train','validation','test'):
+              for line in (root/f'{split}.jsonl').read_text(encoding='utf-8').splitlines():
+                  row=json.loads(line)
+                  if row['id'] in ids:
+                      raise SystemExit(f"duplicate id across splits: {row['id']}")
+                  ids[row['id']]=split
+          print('split isolation OK:', len(ids))
+          PY
+      - name: Upload generated dataset artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dakarli-dataset-v2.2-10000
+          path: data/generated/

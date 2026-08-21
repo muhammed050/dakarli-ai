@@ -1,0 +1,16 @@
+{
+  "trace_id": "github-real-002",
+  "source_type": "verified_connector",
+  "tool": "github",
+  "request": "Inspect PR #1 and determine whether the dataset upgrade is ready to merge.",
+  "steps": [
+    {"step":1,"kind":"plan","evidence":"Read PR state and head/base refs before judging merge readiness."},
+    {"step":2,"kind":"tool_call","tool":"github.get_pr_info","arguments":{"repository_full_name":"muhammed050/dakarli-ai","pr_number":1}},
+    {"step":3,"kind":"observation","observation":{"state":"open","merged":false,"mergeable":false,"draft":false,"base":"main","head":"dataset/v2.2-production","commits":11,"changed_files":10},"evidence":"Captured from the connected GitHub PR response."},
+    {"step":4,"kind":"decision","result":"Do not claim the PR is ready to merge because GitHub reports mergeable=false and no successful CI run was established in this trace."},
+    {"step":5,"kind":"verification","result":"PR remains open and unmerged; the trace does not assert successful CI."}
+  ],
+  "outcome":"PR inspected without falsely claiming merge readiness.",
+  "verification":{"verified":true,"merge_claim":"not made"},
+  "quality":{"verified":true,"secrets_removed":true,"source_ref":"GitHub PR #1 inspection performed during Dakarli dataset work"}
+}
