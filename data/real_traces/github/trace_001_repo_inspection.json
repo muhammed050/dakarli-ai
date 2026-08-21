@@ -1,0 +1,16 @@
+{
+  "trace_id": "github-real-001",
+  "source_type": "verified_connector",
+  "tool": "github",
+  "request": "Inspect the Dakarli AI repository before changing it.",
+  "steps": [
+    {"step":1,"kind":"plan","evidence":"Inspect repository metadata first; do not assume files exist."},
+    {"step":2,"kind":"tool_call","tool":"github.get_repo","arguments":{"repository_full_name":"muhammed050/dakarli-ai"}},
+    {"step":3,"kind":"observation","observation":{"name":"dakarli-ai","owner":"muhammed050","default_branch":"main","visibility":"public","archived":false,"permissions":{"admin":true,"maintain":true,"push":true}},"evidence":"Captured from the connected GitHub repository response."},
+    {"step":4,"kind":"decision","result":"Repository is writable and public; inspect contents before modifying."},
+    {"step":5,"kind":"verification","result":"Repository metadata was returned successfully; no file mutation was performed by this trace."}
+  ],
+  "outcome":"Repository metadata inspected successfully.",
+  "verification":{"verified":true,"mutation":"none"},
+  "quality":{"verified":true,"secrets_removed":true,"source_ref":"GitHub repository inspection performed during Dakarli dataset work"}
+}
